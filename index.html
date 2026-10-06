@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>It's Saturday — Aibo Banner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+  <!-- 英文字體：Adobe Fonts「collier」 -->
+  <link rel="stylesheet" href="https://use.typekit.net/ezg8jxr.css">
+  <style>
+    :root {
+      /* ══════════ 顏色設定 ══════════ */
+      --bg: #d9cbbb;               /* 圖片載入前的底色 */
+      --text: #ffffff;             /* 文字顏色 */
+
+      /* ══════════ 字型設定（英文 collier、中日文思源黑體） ══════════ */
+      --font: "collier", 'Noto Sans TC', sans-serif;
+
+      /* ══════════ 電腦版文字大小（cqw = 左圖寬度的 %，圖變大字就跟著變大） ══════════ */
+      --title-size: 12.5cqw;       /* Aibo */
+      --kana-size: 2.6cqw;         /* あいぼう */
+      --series-size: 3.3cqw;       /* 寵物陪伴系列 */
+      --desc-size: 1.7cqw;         /* 下方兩行說明 */
+
+      /* ══════════ 版面設定 ══════════ */
+      --ratio-pc: 2 / 1;           /* 電腦版整體比例（設計稿 2000×1000） */
+      --ratio-m: 800 / 1060;       /* 手機版比例（設計稿 800×1060） */
+      --cols: 2fr 1.02fr 0.98fr;   /* 電腦版三欄寬度：左圖、中窄圖、右窄圖 */
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      background: var(--bg);
+      overflow-x: hidden;
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== 外框：電腦版三欄 ===== */
+    .banner {
+      display: grid;
+      grid-template-columns: var(--cols);
+      aspect-ratio: var(--ratio-pc);
+      width: 100%;
+      background: var(--bg);
+    }
+
+    .cell {
+      position: relative;
+      min-width: 0;
+      height: 100%;
+    }
+    .cell img {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      color: transparent;
+      background: var(--bg);
+    }
+
+    /* ===== 左圖：文字疊在圖上 ===== */
+    .main {
+      container-type: inline-size;   /* 讓文字依左圖寬度自動縮放 */
+    }
+    .copy {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 13% 6% 4.5%;
+      color: var(--text);
+      text-align: center;
+    }
+
+    .title {
+      font-weight: 300;
+      font-size: 12.5vw;               /* 舊瀏覽器備用 */
+      font-size: var(--title-size);
+      line-height: 1;
+      letter-spacing: 0.01em;
+    }
+    .kana {
+      margin-top: 0.5em;
+      font-weight: 300;
+      font-size: var(--kana-size);
+      line-height: 1.4;
+      letter-spacing: 0.12em;
+    }
+    .series {
+      margin-top: 0.8em;
+      font-weight: 300;
+      font-size: var(--series-size);
+      line-height: 1.4;
+      letter-spacing: 0.32em;
+      text-indent: 0.32em;            /* 抵銷最後一字的字距，讓置中更準 */
+    }
+    .desc {
+      font-weight: 400;
+      font-size: var(--desc-size);
+      line-height: 2;
+      letter-spacing: 0.18em;
+      text-indent: 0.18em;
+    }
+
+    /* ===== 手機版（768px 以下）：隱藏右邊兩張窄圖，文字自動放大 ===== */
+    @media (max-width: 767px) {
+      :root {
+        --title-size: 17cqw;
+        --kana-size: 4cqw;
+        --series-size: max(16px, 5cqw);
+        --desc-size: max(12px, 3cqw);
+      }
+      .banner {
+        grid-template-columns: 1fr;
+        aspect-ratio: var(--ratio-m);
+      }
+      .side {
+        display: none;
+      }
+      .copy {
+        padding: 11% 6% 6%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="banner">
+
+    <!-- 左圖（手機版也顯示）→ 換成「沒有文字」的圖片網址 -->
+    <div class="cell main">
+      <picture>
+        <!-- 手機版圖片（800×1060 直式） -->
+        <source media="(max-width: 767px)" srcset="https://ik.imagekit.io/itssaturday/banner/202261006-banner-cat-01-m.jpg">
+        <!-- 電腦版圖片（1000×1000 正方形） -->
+        <img src="https://ik.imagekit.io/itssaturday/banner/202261006-banner-cat-01.jpg" alt="Aibo 寵物陪伴系列香氛蠟燭">
+      </picture>
+
+      <div class="copy">
+        <div class="head">
+          <h2 class="title">Aibo</h2>
+          <p class="kana">あいぼう</p>
+          <p class="series">寵物陪伴系列</p>
+        </div>
+        <p class="desc">比朋友更親密的夥伴<br>給你最療癒的盛夏香氛</p>
+      </div>
+    </div>
+
+    <!-- 中間窄圖（手機自動隱藏）→ 510 × 1000 -->
+    <div class="cell side">
+      <img src="https://ik.imagekit.io/itssaturday/banner/202261006-banner-cat-02-01.jpg" alt="Aibo 寵物陪伴系列香氛蠟燭" loading="lazy">
+    </div>
+
+    <!-- 右邊窄圖（手機自動隱藏）→ 490 × 1000 -->
+    <div class="cell side">
+      <img src="https://ik.imagekit.io/itssaturday/banner/202261006-banner-cat-02-02.jpg" alt="Aibo 寵物陪伴系列香氛蠟燭" loading="lazy">
+    </div>
+
+  </div>
+
+  <script>
+    /* 把內容的實際高度回報給 BVShop 頁面，讓框框高度自動剛好 */
+    (function () {
+      var last = 0;
+      function report() {
+        var h = document.querySelector(".banner").offsetHeight;
+        if (h && h !== last) {
+          last = h;
+          window.parent.postMessage({ ispBannerHeight: h, ispBannerId: "isp-aibo-banner" }, "*");
+        }
+      }
+      window.addEventListener("load", report);
+      window.addEventListener("resize", report);
+      Array.prototype.forEach.call(document.images, function (img) {
+        img.addEventListener("load", report);
+      });
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(report);
+      report();
+      setTimeout(report, 500);
+      setTimeout(report, 1500);
+    })();
+  </script>
+</body>
+</html>
