@@ -18,15 +18,15 @@
       /* ══════════ 字型設定（英文 collier、中日文思源黑體） ══════════ */
       --font: "collier", 'Noto Sans TC', sans-serif;
 
-      /* ══════════ 電腦版文字大小（cqw = 左圖寬度的 %，圖變大字就跟著變大） ══════════ */
-      --title-size: 12.5cqw;       /* Aibo */
-      --kana-size: 2.6cqw;         /* あいぼう */
-      --series-size: 3.3cqw;       /* 寵物陪伴系列 */
-      --desc-size: 1.7cqw;         /* 下方兩行說明 */
+      /* ══════════ 文字大小（cqmin = 左圖寬、高較短的那一邊的 %，圖變大字就跟著變大） ══════════ */
+      --title-size: 12.5cqmin;     /* Aibo */
+      --kana-size: 2.6cqmin;       /* あいぼう */
+      --series-size: 3.3cqmin;     /* 寵物陪伴系列 */
+      --desc-size: max(13px, 1.7cqmin); /* 下方兩行說明 */
 
-      /* ══════════ 版面設定 ══════════ */
-      --ratio-pc: 2 / 1;           /* 電腦版整體比例（設計稿 2000×1000） */
-      --ratio-m: 800 / 1060;       /* 手機版比例（設計稿 800×1060） */
+      /* ══════════ 版面設定（與「Gift for U and me」banner 一致） ══════════ */
+      --height-pc: 600px;          /* 電腦版高度 */
+      --ratio-m: 800 / 1060;       /* 手機／平板版比例（設計稿 800×1060） */
       --cols: 2fr 1.02fr 0.98fr;   /* 電腦版三欄寬度：左圖、中窄圖、右窄圖 */
     }
 
@@ -44,13 +44,16 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ===== 外框：電腦版三欄 ===== */
+    /* ===== 外框：手機／平板先顯示左圖一張 ===== */
     .banner {
       display: grid;
-      grid-template-columns: var(--cols);
-      aspect-ratio: var(--ratio-pc);
+      grid-template-columns: 1fr;
+      aspect-ratio: var(--ratio-m);
       width: 100%;
       background: var(--bg);
+    }
+    .side {
+      display: none;
     }
 
     .cell {
@@ -71,7 +74,7 @@
 
     /* ===== 左圖：文字疊在圖上 ===== */
     .main {
-      container-type: inline-size;   /* 讓文字依左圖寬度自動縮放 */
+      container-type: size;          /* 讓文字依左圖大小自動縮放 */
     }
     .copy {
       position: absolute;
@@ -81,14 +84,14 @@
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      padding: 13% 6% 4.5%;
+      padding: 11cqmin 6cqmin 6cqmin;
       color: var(--text);
       text-align: center;
     }
 
     .title {
       font-weight: 300;
-      font-size: 12.5vw;               /* 舊瀏覽器備用 */
+      font-size: 64px;                 /* 舊瀏覽器備用 */
       font-size: var(--title-size);
       line-height: 1;
       letter-spacing: 0.01em;
@@ -116,23 +119,28 @@
       text-indent: 0.18em;
     }
 
-    /* ===== 手機版（768px 以下）：隱藏右邊兩張窄圖，文字自動放大 ===== */
-    @media (max-width: 767px) {
+    /* ===== 手機／平板（1023px 以下）：文字放大 ===== */
+    @media (max-width: 1023px) {
       :root {
-        --title-size: 17cqw;
-        --kana-size: 4cqw;
-        --series-size: max(16px, 5cqw);
-        --desc-size: max(12px, 3cqw);
+        --title-size: 17cqmin;
+        --kana-size: 4cqmin;
+        --series-size: max(16px, 5cqmin);
+        --desc-size: max(12px, 3cqmin);
       }
+    }
+
+    /* ===== 電腦（1024px 以上）：左圖＋兩張窄圖，高度 600px ===== */
+    @media (min-width: 1024px) {
       .banner {
-        grid-template-columns: 1fr;
-        aspect-ratio: var(--ratio-m);
+        grid-template-columns: var(--cols);
+        aspect-ratio: auto;
+        height: var(--height-pc);
       }
       .side {
-        display: none;
+        display: block;
       }
       .copy {
-        padding: 11% 6% 6%;
+        padding: 12cqmin 6cqmin 4.5cqmin;
       }
     }
   </style>
@@ -143,9 +151,9 @@
     <!-- 左圖（手機版也顯示）→ 換成「沒有文字」的圖片網址 -->
     <div class="cell main">
       <picture>
-        <!-- 手機版圖片（800×1060 直式） -->
-        <source media="(max-width: 767px)" srcset="https://ik.imagekit.io/itssaturday/banner/202261006-banner-cat-01-m.jpg">
-        <!-- 電腦版圖片（1000×1000 正方形） -->
+        <!-- 手機／平板圖片（800×1060 直式） -->
+        <source media="(max-width: 1023px)" srcset="https://ik.imagekit.io/itssaturday/banner/202261006-banner-cat-01-m.jpg">
+        <!-- 電腦版圖片（建議 1200×1000） -->
         <img src="https://ik.imagekit.io/itssaturday/banner/202261006-banner-cat-01.jpg" alt="Aibo 寵物陪伴系列香氛蠟燭">
       </picture>
 
@@ -155,7 +163,7 @@
           <p class="kana">あいぼう</p>
           <p class="series">寵物陪伴系列</p>
         </div>
-        <p class="desc">比朋友更親密的夥伴<br>給你最療癒的盛夏香氛</p>
+        <p class="desc">比朋友更親密的夥伴<br>寵物友善香氛，給你最療癒的盛夏香氛</p>
       </div>
     </div>
 
